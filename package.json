@@ -1,0 +1,27 @@
+{
+  "name": "chatbot-widget",
+  "version": "1.0.0",
+  "description": "An Open Source ChatBot widget easy to connect to RASA bot through [Rest](https://rasa.com/docs/rasa/user-guide/connectors/your-own-website/#rest-channels) Channel.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shasha79/Chatbot-Widget.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shasha79/Chatbot-Widget/issues"
+  },
+  "homepage": "https://github.com/shasha79/Chatbot-Widget#readme",
+  "devDependencies": {
+    "css-loader": "^3.4.2",
+    "file-loader": "^5.0.2",
+    "style-loader": "^1.1.3",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
