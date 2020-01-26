@@ -18,6 +18,12 @@ module.exports = {
            'file-loader',
          ],
        },
+       {
+         test: /\.html$/,
+         use: [
+           'html-loader',
+         ],
+       },
     ]
   }
 }

@@ -6,5 +6,6 @@ require('./static/css/style.css');
 require('./static/css/materialize.min.css');
 import User from './static/img/userAvatar.jpg';
 import Bot from './static/img/botAvatar.png';
+import widget from './widget.html';
 
 
