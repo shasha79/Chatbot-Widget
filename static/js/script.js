@@ -1,25 +1,29 @@
+
 // ========================== greet user proactively ========================
 $(document).ready(function () {
 
+    $('#webchat').load('./widget.html', "",   function() {
 	//drop down menu for close, restart conversation & clear the chats.
-	$('.dropdown-trigger').dropdown();
+        $('.dropdown-trigger').dropdown();
 
-	//initiate the modal for displaying the charts, if you dont have charts, then you comment the below line
-	$('.modal').modal();
-
-	//enable this if u have configured the bot to start the conversation. 
-	// showBotTyping();
+        //initiate the modal for displaying the charts, if you dont have charts, then you comment the below line
+        $('.modal').modal()
+   });
+        // showBotTyping();
 	// $("#userInput").prop('disabled', true);
 
-	//global variables
+	//global variables (TODO: read from config)
 	action_name = "action_greet_user";
 	user_id = "jitesh97";
+        server_url = location.protocol + "//" + location.hostname;
 
+        botAvatar = 'https://jck.nl//mstile-310x310.png';
+        userAvatar = 'dist/5add0b7da323c027e802a9425350f3f7.jpg';
+        imgProfile = 'https://raw.githubusercontent.com/shasha79/rasa-webchat/master/assets/launcher_button.svg';
 	//if you want the bot to start the conversation
 	// action_trigger();
 
 })
-
 // ========================== restart conversation ========================
 function restartConversation() {
 	$("#userInput").prop('disabled', true);
@@ -40,7 +44,7 @@ function action_trigger() {
 
 	// send an event to the bot, so that bot can start the conversation by greeting the user
 	$.ajax({
-		url: `http://localhost:5005/conversations/${user_id}/execute`,
+		url: `${server_url}/conversations/${user_id}/execute`,
 		type: "POST",
 		contentType: "application/json",
 		data: JSON.stringify({ "name": action_name, "policy": "MappingPolicy", "confidence": "0.98" }),
@@ -63,7 +67,7 @@ function action_trigger() {
 }
 
 //=====================================	user enter or sends the message =====================
-$(".usrInput").on("keyup keypress", function (e) {
+$("#webchat").on("keyup keypress", ".usrInput", function (e) {
 	var keyCode = e.keyCode || e.which;
 
 	var text = $(".usrInput").val();
@@ -94,7 +98,7 @@ $(".usrInput").on("keyup keypress", function (e) {
 	}
 });
 
-$("#sendButton").on("click", function (e) {
+$("#webchat").on("click", "#sendButton", function (e) {
 	var text = $(".usrInput").val();
 	if (text == "" || $.trim(text) == "") {
 		e.preventDefault();
@@ -120,7 +124,7 @@ $("#sendButton").on("click", function (e) {
 
 //==================================== Set user response =====================================
 function setUserResponse(message) {
-	var UserResponse = '<img class="userAvatar" src=' + "./static/img/userAvatar.jpg" + '><p class="userMsg">' + message + ' </p><div class="clearfix"></div>';
+	var UserResponse = '<img class="userAvatar" src=' + userAvatar + '><p class="userMsg">' + message + ' </p><div class="clearfix"></div>';
 	$(UserResponse).appendTo(".chats").show("slow");
 
 	$(".usrInput").val("");
@@ -140,7 +144,7 @@ function scrollToBottomOfResults() {
 function send(message) {
 
 	$.ajax({
-		url: "http://localhost:5005/webhooks/rest/webhook",
+		url: `${server_url}/webhooks/rest/webhook`,
 		type: "POST",
 		contentType: "application/json",
 		data: JSON.stringify({ message: message, sender: user_id }),
@@ -185,7 +189,7 @@ function setBotResponse(response) {
 			//if there is no response from Rasa, send  fallback message to the user
 			var fallbackMsg = "I am facing some issues, please try again later!!!";
 
-			var BotResponse = '<img class="botAvatar" src="./static/img/botAvatar.png"/><p class="botMsg">' + fallbackMsg + '</p><div class="clearfix"></div>';
+			var BotResponse = '<img class="botAvatar" src="' + botAvatar +  '/><p class="botMsg">' + fallbackMsg + '</p><div class="clearfix"></div>';
 
 			$(BotResponse).appendTo(".chats").hide().fadeIn(1000);
 			scrollToBottomOfResults();
@@ -197,7 +201,7 @@ function setBotResponse(response) {
 
 				//check if the response contains "text"
 				if (response[i].hasOwnProperty("text")) {
-					var BotResponse = '<img class="botAvatar" src="./static/img/botAvatar.png"/><p class="botMsg">' + response[i].text + '</p><div class="clearfix"></div>';
+					var BotResponse = '<img class="botAvatar" src="' + botAvatar + '"/><p class="botMsg">' + response[i].text + '</p><div class="clearfix"></div>';
 					$(BotResponse).appendTo(".chats").hide().fadeIn(1000);
 				}
 
@@ -273,7 +277,7 @@ function setBotResponse(response) {
 }
 
 //====================================== Toggle chatbot =======================================
-$("#profile_div").click(function () {
+$("#webchat").on("click", "#profile_div", function () {
 	$(".profile_div").toggle();
 	$(".widget").toggle();
 });
@@ -309,12 +313,12 @@ $(document).on("click", ".menu .menuChips", function () {
 //====================================== functions for drop-down menu of the bot  =========================================
 
 //restart function to restart the conversation.
-$("#restart").click(function () {
+$("#webchat").on("click", "#restart", function () {
 	restartConversation()
 });
 
 //clear function to clear the chat contents of the widget.
-$("#clear").click(function () {
+$("#webchat").on("click", "#clear", function () {
 	$(".chats").fadeOut("normal", function () {
 		$(".chats").html("");
 		$(".chats").fadeIn();
@@ -322,7 +326,7 @@ $("#clear").click(function () {
 });
 
 //close function to close the widget.
-$("#close").click(function () {
+$("#webchat").on("click", "#close", function () {
 	$(".profile_div").toggle();
 	$(".widget").toggle();
 	scrollToBottomOfResults();
@@ -490,7 +494,7 @@ function handleLocationAccessError(error) {
 //======================================bot typing animation ======================================
 function showBotTyping() {
 
-	var botTyping = '<img class="botAvatar" id="botAvatar" src="./static/img/botAvatar.png"/><div class="botTyping">' + '<div class="bounce1"></div>' + '<div class="bounce2"></div>' + '<div class="bounce3"></div>' + '</div>'
+	var botTyping = '<img class="botAvatar" id="botAvatar" src="' + botAvatar +'"/><div class="botTyping">' + '<div class="bounce1"></div>' + '<div class="bounce2"></div>' + '<div class="bounce3"></div>' + '</div>'
 	$(botTyping).appendTo(".chats");
 	$('.botTyping').show();
 	scrollToBottomOfResults();

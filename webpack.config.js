@@ -1,3 +1,6 @@
+var webpack = require("webpack");
+var path = require('path');
+
 module.exports = {
   entry: './app.js',
   output: {
@@ -25,5 +28,13 @@ module.exports = {
          ],
        },
     ]
-  }
+  },
+   plugins: [
+     new webpack.ProvidePlugin({
+        $: path.resolve(path.join(__dirname, './static/js/jquery.min.js')),
+        jQuery: path.resolve(path.join(__dirname, './static/js/jquery.min.js')),
+        "window.$": path.resolve(path.join(__dirname, './static/js/jquery.min.js')),
+        "window.jQuery": path.resolve(path.join(__dirname, './static/js/jquery.min.js')),
+    })
+  ],
 }

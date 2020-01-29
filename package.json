@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production"
+    "build": "webpack --mode development",
+    "build_parcel": "parcel build app.js",
+    "build_browserify": "browserify app.js -o brows.js"
   },
   "repository": {
     "type": "git",
@@ -17,8 +19,9 @@
     "url": "https://github.com/shasha79/Chatbot-Widget/issues"
   },
   "homepage": "https://github.com/shasha79/Chatbot-Widget#readme",
-  "devDependencies": {
+  "comment devDependencies": {
     "css-loader": "^3.4.2",
+    "cssnano": "^4.1.10",
     "file-loader": "^5.0.2",
     "html-loader": "^0.5.5",
     "style-loader": "^1.1.3",
